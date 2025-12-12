@@ -22,6 +22,12 @@ class Servox < Formula
     if (buildpath/"lib").exist?
       (bin/"lib").install Dir["lib/*"]
     end
+
+    # Symlink missing system GStreamer libraries into bin/lib
+    gst_libs = Dir["#{Formula["gstreamer"].opt_lib}/libgstplay*.dylib"]
+    gst_libs.each do |lib|
+      (bin/"lib"/File.basename(lib)).make_symlink(lib)
+    end
   end
 
   def caveats
