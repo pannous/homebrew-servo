@@ -4,6 +4,11 @@ class Servox < Formula
   license "MPL-2.0"
   version "2025.12.13"
 
+  depends_on "gstreamer"
+  depends_on "gst-plugins-base"
+  depends_on "gst-plugins-good"
+  depends_on "gst-plugins-bad"
+
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/pannous/servo/releases/download/v2025.12.13/servo-2025.12.13-darwin-arm64.tar.gz"
