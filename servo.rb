@@ -1,18 +1,36 @@
 class Servo < Formula
-  desc "Servo browser engine with WASM and TypeScript support"
+  desc "Servo browser engine with WASM GC and TypeScript support"
   homepage "https://github.com/pannous/servo"
-  url "https://github.com/pannous/servo.git", branch: "main"
-  version "1.0.0"
-  head "https://github.com/pannous/servo.git", branch: "main"
+  license "MPL-2.0"
+  version "2025.12.12"
 
-  depends_on "rust" => :build
-  depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
+  on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/pannous/servo/releases/download/v2025.12.12/servo-2025.12.12-darwin-arm64.tar.gz"
+      sha256 "9222bd2a6b1de450ec123d7484205ef65ee708336c7cb4226d9149262b7c0d19"
+    end
+  end
 
   def install
-    system "./mach", "build", "--release"
-    bin.install "target/release/servo"
+    bin.install "servo"
+  end
+
+  def caveats
+    <<~EOS
+      🎉 Servo with WASM GC and TypeScript support!
+
+      Features:
+        • <script type="text/wast"> - WebAssembly Text format
+        • <script type="text/typescript"> - TypeScript support
+        • WASM GC structs with named field access
+        • Direct property access: box.val, box[0]
+
+      Quick test:
+        curl -O https://raw.githubusercontent.com/pannous/servo/main/test-all.html
+        servo test-all.html
+
+      Source: https://github.com/pannous/servo
+    EOS
   end
 
   test do
