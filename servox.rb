@@ -4,11 +4,6 @@ class Servox < Formula
   license "MPL-2.0"
   version "2025.12.13"
 
-  depends_on "gstreamer"
-  depends_on "gst-plugins-base"
-  depends_on "gst-plugins-good"
-  depends_on "gst-plugins-bad"
-
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/pannous/servo/releases/download/v2025.12.13/servo-2025.12.13-darwin-arm64.tar.gz"
@@ -18,16 +13,6 @@ class Servox < Formula
 
   def install
     bin.install "servo"
-    # Install GStreamer libraries next to binary (rpath expects bin/lib/)
-    if (buildpath/"lib").exist?
-      (bin/"lib").install Dir["lib/*"]
-    end
-
-    # Symlink missing system GStreamer libraries into bin/lib
-    gst_libs = Dir["#{Formula["gstreamer"].opt_lib}/libgstplay*.dylib"]
-    gst_libs.each do |lib|
-      (bin/"lib"/File.basename(lib)).make_symlink(lib)
-    end
   end
 
   def caveats
